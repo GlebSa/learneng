@@ -1,0 +1,22 @@
+plugins {
+    id 'io.franzbecker.gradle-lombok' version '2.0'
+    id 'java'
+}
+
+group 'ru.glebsa'
+version '0.1-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+}
+
+lombok {
+    version = "1.18.4"
+    sha256 = "39f3922deb679b1852af519eb227157ef2dd0a21eec3542c8ce1b45f2df39742"
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
