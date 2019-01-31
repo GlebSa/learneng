@@ -2,8 +2,10 @@ package learneng.questionarie;
 
 public interface Questionnaire {
 
+    boolean hasQuestions();
+
     Question getQuestion();
 
-    void answer(int userAnswer);
+    boolean answer(String userAnswer);
 
 }

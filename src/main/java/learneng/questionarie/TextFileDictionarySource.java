@@ -10,30 +10,31 @@ import java.nio.file.InvalidPathException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-class FileDictionarySource implements DictionarySource {
+public class TextFileDictionarySource implements DictionarySource {
 
     private String dictionaryFilePath;
 
-    FileDictionarySource(String dictionaryFilePath) {
+    public TextFileDictionarySource(String dictionaryFilePath) {
         this.dictionaryFilePath = dictionaryFilePath;
     }
 
     @Override
     public Dictionary getDictionary() {
-        return new FileDictionary(
+        return new DictionaryImpl(
                 getValuesList(),
-                getWrongAnswers()
+                getWrongVariants()
         );
     }
 
-    private Set<String> getWrongAnswers() {
+    private List<String> getWrongVariants() {
         try (BufferedReader r = getReader()) {
             return r.lines()
                     .map(this::getWordsOnly)
                     .collect(Collectors.toList())
                     .stream()
                     .flatMap(List::stream)
-                    .collect(Collectors.toSet());
+                    .distinct()
+                    .collect(Collectors.toList());
         } catch (InvalidPathException | IOException e) {
             throw new IllegalStateException(e);
         }

@@ -1,19 +1,22 @@
 package learneng.questionarie;
 
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
+import lombok.NonNull;
 
 import java.util.List;
 
 @AllArgsConstructor
 @Getter
-@EqualsAndHashCode
-@ToString
-class QuestionImpl implements Question {
+final class QuestionImpl implements Question {
 
-    private String word;
-    private List<Variant> variants;
+    @NonNull
+    private final String word;
+
+    @NonNull
+    private final List<String> variants;
+
+    @NonNull
+    private final List<String> rightVariants;
 
 }

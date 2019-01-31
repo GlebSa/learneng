@@ -6,10 +6,8 @@ public class QuestionnaireFactory {
     }
 
     public static Questionnaire create(String dictionaryFilePath) {
-        Dictionary dictionary = new FileDictionarySource(dictionaryFilePath).getDictionary();
-        System.out.println(dictionary);
-//        return new QuestionnaireImpl(dictionaryFilePath);
-        return null;
+        Dictionary dictionary = new TextFileDictionarySource(dictionaryFilePath).getDictionary();
+        return new CommonQuestionnaire(dictionary);
     }
 
 }

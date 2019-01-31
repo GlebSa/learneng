@@ -9,9 +9,9 @@ import java.util.Set;
 
 @AllArgsConstructor
 @Getter
-class FileDictionary implements Dictionary {
+final class DictionaryImpl implements Dictionary {
 
     private Map<String, List<String>> values;
-    private Set<String> wrongAnswers;
+    private List<String> wrongVariants;
 
 }
