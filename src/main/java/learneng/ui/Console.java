@@ -7,6 +7,15 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Console {
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_WHITE = "\u001B[37m";
 
     public void start(Questionnaire questionnaire) {
         System.out.println("For exit, please enter \'q\'.");
@@ -17,7 +26,7 @@ public class Console {
             List<String> variants = question.getVariants();
 
             System.out.println("-------------------------------------------------------------------------------------------");
-            System.out.println(question.getWord());
+            System.out.println(ANSI_YELLOW + question.getWord() + ANSI_RESET);
             System.out.println();
             for (int i = 0; i < variants.size(); i++) {
                 System.out.printf("%d. %s\n", i + 1, variants.get(i));
@@ -43,21 +52,21 @@ public class Console {
                     String userAnswer = variants.get(res - 1);
                     System.out.println();
                     if (questionnaire.answer(userAnswer)) {
-                        System.out.println("Right answer!");
+                        System.out.println(ANSI_GREEN + "Right answer!" + ANSI_RESET);
                     } else {
-                        System.out.println("Wrong answer!");
+                        System.out.println(ANSI_RED + "Wrong answer!" + ANSI_RESET);
                     }
                     printRightVariants(question);
                     break;
                 } catch (NumberFormatException | IndexOutOfBoundsException e) {
-                    System.out.printf("Please inter the number between 1 and %d, or \"q\" for exit!\n", variants.size());
+                    System.out.printf(ANSI_RED + "Please inter the number between 1 and %d, or \"q\" for exit!\n" + ANSI_RESET, variants.size());
                 }
             }
         }
     }
 
     private void printRightVariants(Question question) {
-        System.out.println(question.getWord() + ": " + String.join(", ", question.getRightVariants()));
+        System.out.println(ANSI_PURPLE + question.getWord() + ": " + String.join(", ", question.getRightVariants()) + ANSI_RESET);
     }
 
 }
