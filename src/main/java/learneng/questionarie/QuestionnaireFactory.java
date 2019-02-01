@@ -5,9 +5,9 @@ public class QuestionnaireFactory {
     private QuestionnaireFactory() {
     }
 
-    public static Questionnaire create(String dictionaryFilePath) {
+    public static Questionnaire create(String dictionaryFilePath, int variantsLimit) {
         Dictionary dictionary = new TextFileDictionarySource(dictionaryFilePath).getDictionary();
-        return new CommonQuestionnaire(dictionary);
+        return new CommonQuestionnaire(dictionary, variantsLimit);
     }
 
 }

@@ -10,27 +10,32 @@ public class CommonQuestionnaire implements Questionnaire {
     private List<Answer> rightAnswers;
     private List<Answer> wrongAnswers;
 
-    public CommonQuestionnaire(Dictionary dictionary) {
-        setQuestions(dictionary);
+    /**
+     * @param dictionary    {@link Dictionary}
+     * @param variantsLimit limit of variants for a question
+     */
+    public CommonQuestionnaire(Dictionary dictionary, int variantsLimit) {
+        setQuestions(dictionary, variantsLimit);
         buffer = new LinkedList<>();
         rightAnswers = new ArrayList<>();
         wrongAnswers = new ArrayList<>();
     }
 
-    private void setQuestions(Dictionary dictionary) {
+    private void setQuestions(Dictionary dictionary, int variantsLimit) {
+        if (variantsLimit < 2) throw new IllegalArgumentException("Variants limit is less than 2!");
         Random random = new Random(47);
         LinkedList<Question> list = dictionary.getValues().entrySet().stream()
-                .map(entry -> createQuestion(entry.getKey(), entry.getValue(), dictionary.getWrongVariants(), random))
+                .map(entry -> createQuestion(entry.getKey(), entry.getValue(), dictionary.getWrongVariants(), random, variantsLimit))
                 .collect(Collectors.toCollection(LinkedList::new));
         Collections.shuffle(list);
         questions = list;
     }
 
-    private Question createQuestion(String questionWord, List<String> rightVariants, List<String> wrongVariants, Random random) {
+    private Question createQuestion(String questionWord, List<String> rightVariants, List<String> wrongVariants, Random random, int variantsLimit) {
         List<String> variants = new ArrayList<>();
         variants.add(rightVariants.get(random.nextInt(rightVariants.size())));
 
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < variantsLimit; i++) {
             for (int j = 0; j < 5; j++) {
                 String wrongVariant = wrongVariants.get(random.nextInt(wrongVariants.size()));
 
