@@ -7,6 +7,19 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Console {
+    private static final String ANSI_RESET = "\u001B[0m";
+    //private static final String ANSI_BLACK = "\u001B[30m";
+    private static final String ANSI_RED = "\u001B[31m";
+    private static final String ANSI_GREEN = "\u001B[32m";
+    private static final String ANSI_YELLOW = "\u001B[33m";
+    private static final String ANSI_BLUE = "\u001B[34m";
+    //private static final String ANSI_PURPLE = "\u001B[35m";
+    private static final String ANSI_CYAN = "\u001B[36m";
+    //private static final String ANSI_WHITE = "\u001B[37m";
+
+    private static final String ANSI_UNDERLINE = "\u001B[4m";
+    private static final String ANSI_LIGHT = "\u001B[1m";
+    private static final String ANSI_DARK = "\u001B[2m";
 
     public void start(Questionnaire questionnaire) {
         System.out.println("For exit, please enter \'q\'.");
@@ -41,9 +54,9 @@ public class Console {
                     String userAnswer = variants.get(res - 1);
                     System.out.println();
                     if (questionnaire.answer(userAnswer)) {
-                        System.out.println("Right answer!");
+                        System.out.println(ANSI_GREEN + "Right answer!" + ANSI_RESET);
                     } else {
-                        System.out.println("Wrong answer!");
+                        System.out.println(ANSI_RED + "Wrong answer!" + ANSI_RESET);
                     }
                     printRightVariants(question);
                     break;
@@ -56,21 +69,22 @@ public class Console {
 
     private void printAnswerVariants(List<String> variants) {
         for (int i = 0; i < variants.size(); i++) {
-            System.out.println(i + 1 + ". " + variants.get(i));
+            System.out.println(i + 1 + ". " + ANSI_LIGHT + variants.get(i) + ANSI_RESET);
         }
     }
 
     private void printQuestionPhrase(Question question) {
-        System.out.println(question.getValue());
+        System.out.println(ANSI_LIGHT + ANSI_YELLOW + question.getValue() + ANSI_RESET);
         System.out.println();
     }
 
     private void printSeparateLine() {
-        System.out.println("------------------------------------------------------------------------------------------------------");
+        System.out.println(ANSI_UNDERLINE + ANSI_DARK + "                                                                                                       " + ANSI_RESET);
     }
 
     private void printRightVariants(Question question) {
-        System.out.println(question.getValue() + ": " + String.join("; ", question.getRightVariants()));
+        System.out.println(ANSI_CYAN + question.getValue() + ": " + ANSI_RESET +
+                ANSI_LIGHT + ANSI_BLUE + String.join("; ", question.getRightVariants()) + ANSI_RESET);
     }
 
 }
