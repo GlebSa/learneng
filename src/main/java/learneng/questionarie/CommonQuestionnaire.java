@@ -1,7 +1,13 @@
 package learneng.questionarie;
 
+import learneng.questionarie.dictionary.Dictionary;
+import lombok.Data;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CommonQuestionnaire implements Questionnaire {
 
@@ -16,9 +22,18 @@ public class CommonQuestionnaire implements Questionnaire {
      */
     public CommonQuestionnaire(Dictionary dictionary, int variantsLimit) {
         setQuestions(dictionary, variantsLimit);
-        buffer = new LinkedList<>();
-        rightAnswers = new ArrayList<>();
-        wrongAnswers = new ArrayList<>();
+        this.buffer = new LinkedList<>();
+        this.rightAnswers = new ArrayList<>();
+        this.wrongAnswers = new ArrayList<>();
+    }
+
+    /**
+     * @param memento       {@link QuestionnaireMemento}
+     * @param variantsLimit limit of variants for a question
+     */
+    public CommonQuestionnaire(QuestionnaireMemento memento, Dictionary dictionary, int variantsLimit) {
+        restoreQuestions(memento, dictionary, variantsLimit);
+        this.rightAnswers = memento.getRightAnswers();
     }
 
     private void setQuestions(Dictionary dictionary, int variantsLimit) {
@@ -28,10 +43,25 @@ public class CommonQuestionnaire implements Questionnaire {
                 .map(entry -> createQuestion(entry.getKey(), entry.getValue(), dictionary.getWrongVariants(), random, variantsLimit))
                 .collect(Collectors.toCollection(LinkedList::new));
         Collections.shuffle(list);
-        questions = list;
+        this.questions = list;
     }
 
-    private Question createQuestion(String questionWord, List<String> rightVariants, List<String> wrongVariants, Random random, int variantsLimit) {
+    private void restoreQuestions(QuestionnaireMemento memento, Dictionary dictionary, int variantsLimit) {
+        Random random = new Random(47);
+        Stream<Question> questionStream = memento.getQuestions().stream()
+                .map(question -> createQuestion(question.getValue(), question.getRightVariants(), dictionary.getWrongVariants(), random, variantsLimit));
+        Stream<Question> skippedStream = memento.getSkipped().stream()
+                .map(question -> createQuestion(question.getValue(), question.getRightVariants(), dictionary.getWrongVariants(), random, variantsLimit));
+        Stream<Question> wrongAnswersStream = memento.getWrongAnswers().stream()
+                .map(answer -> createQuestion(answer.getQuestion().getValue(), answer.getQuestion().getRightVariants(), dictionary.getWrongVariants(), random, variantsLimit));
+
+        this.questions = Stream.of(wrongAnswersStream, skippedStream, questionStream)
+                .flatMap(s -> s)
+                .collect(Collectors.toCollection(LinkedList::new));
+
+    }
+
+    private Question createQuestion(String questionValue, List<String> rightVariants, List<String> wrongVariants, Random random, int variantsLimit) {
         List<String> variants = new ArrayList<>();
         variants.add(rightVariants.get(random.nextInt(rightVariants.size())));
 
@@ -48,7 +78,10 @@ public class CommonQuestionnaire implements Questionnaire {
 
         Collections.shuffle(variants);
 
-        return new QuestionImpl(questionWord, variants, rightVariants);
+        return new QuestionImpl()
+                .setValue(questionValue)
+                .setVariants(variants)
+                .setRightVariants(rightVariants);
     }
 
     @Override
@@ -65,7 +98,9 @@ public class CommonQuestionnaire implements Questionnaire {
 
     @Override
     public boolean answer(String userAnswer) {
-        Answer answer = new AnswerImpl(userAnswer, buffer.poll());
+        Answer answer = new AnswerImpl()
+                .setAnswer(userAnswer)
+                .setQuestion(buffer.poll());
         if (answer.isRight()) {
             rightAnswers.add(answer);
             return true;
@@ -74,4 +109,22 @@ public class CommonQuestionnaire implements Questionnaire {
             return false;
         }
     }
+
+    public QuestionnaireMemento save() {
+        return new QuestionnaireMementoImpl()
+                .setQuestions(new ArrayList<>(this.questions))
+                .setSkipped(new ArrayList<>(this.buffer))
+                .setRightAnswers(rightAnswers = new ArrayList<>(this.rightAnswers))
+                .setWrongAnswers(new ArrayList<>(this.wrongAnswers));
+    }
+
+    @Data
+    @Accessors(chain = true)
+    private final class QuestionnaireMementoImpl implements QuestionnaireMemento, Serializable {
+        private List<Question> questions;
+        private List<Question> skipped;
+        private List<Answer> rightAnswers;
+        private List<Answer> wrongAnswers;
+    }
+
 }

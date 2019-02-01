@@ -1,22 +1,18 @@
 package learneng.questionarie;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NonNull;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 
-@AllArgsConstructor
-@Getter
+@Data
+@Accessors(chain = true)
 final class QuestionImpl implements Question {
 
-    @NonNull
-    private final String value;
+    private String value;
 
-    @NonNull
-    private final List<String> variants;
+    private transient List<String> variants;
 
-    @NonNull
-    private final List<String> rightVariants;
+    private List<String> rightVariants;
 
 }

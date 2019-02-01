@@ -1,11 +1,10 @@
-package learneng.questionarie;
+package learneng.questionarie.dictionary;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @AllArgsConstructor
 @Getter

@@ -1,18 +1,15 @@
 package learneng.questionarie;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NonNull;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
-@AllArgsConstructor
-@Getter
+@Data
+@Accessors(chain = true)
 final class AnswerImpl implements Answer {
 
-    @NonNull
-    private final String answer;
+    private String answer;
 
-    @NonNull
-    private final Question question;
+    private Question question;
 
     @Override
     public boolean isRight() {

@@ -1,4 +1,4 @@
-package learneng.questionarie;
+package learneng.questionarie.dictionary;
 
 public interface DictionarySource {
 

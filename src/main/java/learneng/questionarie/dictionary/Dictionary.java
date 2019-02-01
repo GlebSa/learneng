@@ -1,4 +1,4 @@
-package learneng.questionarie;
+package learneng.questionarie.dictionary;
 
 import java.util.List;
 import java.util.Map;

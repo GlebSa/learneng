@@ -1,5 +1,8 @@
 package learneng.questionarie;
 
+import learneng.questionarie.dictionary.Dictionary;
+import learneng.questionarie.dictionary.TextFileDictionarySource;
+
 public class QuestionnaireFactory {
 
     private QuestionnaireFactory() {

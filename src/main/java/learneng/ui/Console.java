@@ -79,7 +79,8 @@ public class Console {
     }
 
     private void printSeparateLine() {
-        System.out.println(ANSI_UNDERLINE + ANSI_DARK + "                                                                                                       " + ANSI_RESET);
+        System.out.println(ANSI_UNDERLINE + ANSI_DARK
+                + "                                                                                                       " + ANSI_RESET);
     }
 
     private void printRightVariants(Question question) {
