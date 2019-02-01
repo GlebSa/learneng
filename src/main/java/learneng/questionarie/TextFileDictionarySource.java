@@ -15,7 +15,7 @@ public class TextFileDictionarySource implements DictionarySource {
     private String dictionaryFilePath;
 
     public TextFileDictionarySource(String dictionaryFilePath) {
-        this.dictionaryFilePath = dictionaryFilePath;
+        this.dictionaryFilePath = Objects.requireNonNull(dictionaryFilePath);
     }
 
     @Override
