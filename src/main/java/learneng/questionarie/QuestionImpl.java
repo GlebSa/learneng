@@ -11,7 +11,7 @@ import java.util.List;
 final class QuestionImpl implements Question {
 
     @NonNull
-    private final String word;
+    private final String value;
 
     @NonNull
     private final List<String> variants;

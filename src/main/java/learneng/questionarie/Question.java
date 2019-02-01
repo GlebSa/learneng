@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface Question {
 
-    String getWord();
+    String getValue();
 
     List<String> getVariants();
 
