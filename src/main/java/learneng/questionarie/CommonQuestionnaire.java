@@ -65,7 +65,7 @@ public class CommonQuestionnaire implements Questionnaire {
         List<String> variants = new ArrayList<>();
         variants.add(rightVariants.get(random.nextInt(rightVariants.size())));
 
-        for (int i = 0; i < variantsLimit; i++) {
+        for (int i = 0; i < variantsLimit - 1; i++) {
             for (int j = 0; j < 5; j++) {
                 String wrongVariant = wrongVariants.get(random.nextInt(wrongVariants.size()));
 
@@ -114,7 +114,7 @@ public class CommonQuestionnaire implements Questionnaire {
         return new QuestionnaireMementoImpl()
                 .setQuestions(new ArrayList<>(this.questions))
                 .setSkipped(new ArrayList<>(this.buffer))
-                .setRightAnswers(rightAnswers = new ArrayList<>(this.rightAnswers))
+                .setRightAnswers(new ArrayList<>(this.rightAnswers))
                 .setWrongAnswers(new ArrayList<>(this.wrongAnswers));
     }
 
