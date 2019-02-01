@@ -17,6 +17,15 @@ lombok {
     sha256 = "39f3922deb679b1852af519eb227157ef2dd0a21eec3542c8ce1b45f2df39742"
 }
 
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'learneng.Main'
+    }
+    baseName = 'learneng'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
 dependencies {
     compile group: 'com.diogonunes', name: 'JCDP', version: '2.0.3.1'
     
