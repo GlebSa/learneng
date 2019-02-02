@@ -1,16 +1,18 @@
 package learneng.questionarie;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
-final class AnswerImpl implements Answer {
+final class DefaultAnswer implements Answer {
 
     private String answer;
 
     private Question question;
 
+    @JsonIgnore
     @Override
     public boolean isRight() {
         return question.getRightVariants().contains(answer);

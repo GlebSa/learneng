@@ -8,4 +8,6 @@ public interface Questionnaire {
 
     boolean answer(String userAnswer);
 
+    Object save();
+
 }

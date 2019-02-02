@@ -54,9 +54,9 @@ public class Console {
                     String userAnswer = variants.get(res - 1);
                     System.out.println();
                     if (questionnaire.answer(userAnswer)) {
-                        System.out.println(ANSI_GREEN + "Right answer!" + ANSI_RESET);
+                        System.out.println(ANSI_GREEN + "Right!" + ANSI_RESET);
                     } else {
-                        System.out.println(ANSI_RED + "Wrong answer!" + ANSI_RESET);
+                        System.out.println(ANSI_RED + "Wrong!" + ANSI_RESET);
                     }
                     printRightVariants(question);
                     break;
