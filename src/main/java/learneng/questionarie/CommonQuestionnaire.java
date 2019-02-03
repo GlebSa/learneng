@@ -56,8 +56,8 @@ public class CommonQuestionnaire implements Questionnaire {
     private void restoreQuestions(Memento memento, Dictionary dictionary, int variantsLimit) {
         if (variantsLimit < 2) throw new IllegalArgumentException("Variants limit is less than 2!");
         this.wrongVariants = dictionary != null ? dictionary.getWrongVariants() : memento.getWrongVariants();
+        this.rightAnswers = memento.getRightAnswers();
         this.buffer = new LinkedList<>();
-        this.rightAnswers = new ArrayList<>();
         this.wrongAnswers = new ArrayList<>();
 
         Random random = new Random(47);
@@ -152,6 +152,26 @@ public class CommonQuestionnaire implements Questionnaire {
                 .setRightAnswers(new ArrayList<>(this.rightAnswers))
                 .setWrongAnswers(new ArrayList<>(this.wrongAnswers))
                 .setWrongVariants(new ArrayList<>(this.wrongVariants));
+    }
+
+    @Override
+    public int rightAnswered() {
+        return rightAnswers.size();
+    }
+
+    @Override
+    public int wrongAnswered() {
+        return wrongAnswers.size();
+    }
+
+    @Override
+    public int notAnswered() {
+        return buffer.size();
+    }
+
+    @Override
+    public int leftToAnswer() {
+        return questions.size();
     }
 
     @Data

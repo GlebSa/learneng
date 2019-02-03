@@ -10,4 +10,12 @@ public interface Questionnaire {
 
     Object save();
 
+    int rightAnswered();
+
+    int wrongAnswered();
+
+    int notAnswered();
+
+    int leftToAnswer();
+
 }
