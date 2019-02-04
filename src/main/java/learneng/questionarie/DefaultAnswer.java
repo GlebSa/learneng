@@ -10,7 +10,7 @@ final class DefaultAnswer implements Answer {
 
     private String answer;
 
-    private Question question;
+    private DefaultQuestion question;
 
     @JsonIgnore
     @Override

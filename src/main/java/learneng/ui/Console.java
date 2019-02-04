@@ -65,10 +65,12 @@ public class Console {
                 }
             }
         }
-        System.out.println("Right answers: " + questionnaire.rightAnswered()
+        printSeparateLine();
+        System.out.println(ANSI_LIGHT + "Right answers: " + questionnaire.rightAnswered()
                 + "; Wrong answers: " + questionnaire.wrongAnswered()
                 + "; Skipped: " + questionnaire.notAnswered()
-                + "; Left to answer: " + questionnaire.leftToAnswer());
+                + "; Left to answer: " + questionnaire.leftToAnswer()
+                + ANSI_RESET);
     }
 
     private void printAnswerVariants(List<String> variants) {
