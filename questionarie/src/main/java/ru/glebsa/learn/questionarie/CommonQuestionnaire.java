@@ -1,6 +1,6 @@
-package learneng.questionarie;
+package ru.glebsa.learn.questionarie;
 
-import learneng.questionarie.dictionary.Dictionary;
+import ru.glebsa.learn.questionarie.dictionary.Dictionary;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -18,19 +18,19 @@ public class CommonQuestionnaire implements Questionnaire {
     private List<String> wrongVariants;
 
     /**
-     * @param dictionary    {@link Dictionary}
+     * @param dictionary    {@link ru.glebsa.learn.questionarie.dictionary.Dictionary}
      * @param variantsLimit limit of variants for a question
      */
-    public CommonQuestionnaire(Dictionary dictionary, int variantsLimit) {
+    public CommonQuestionnaire(ru.glebsa.learn.questionarie.dictionary.Dictionary dictionary, int variantsLimit) {
         setQuestions(dictionary, variantsLimit);
     }
 
     /**
-     * @param dictionary    {@link Dictionary}
+     * @param dictionary    {@link ru.glebsa.learn.questionarie.dictionary.Dictionary}
      * @param memento       {@link Memento}
      * @param variantsLimit limit of variants for a question
      */
-    public CommonQuestionnaire(Dictionary dictionary, Memento memento, int variantsLimit) {
+    public CommonQuestionnaire(ru.glebsa.learn.questionarie.dictionary.Dictionary dictionary, Memento memento, int variantsLimit) {
         if (memento != null) {
             restoreQuestions(memento, dictionary, variantsLimit);
         } else {
@@ -38,7 +38,7 @@ public class CommonQuestionnaire implements Questionnaire {
         }
     }
 
-    private void setQuestions(Dictionary dictionary, int variantsLimit) {
+    private void setQuestions(ru.glebsa.learn.questionarie.dictionary.Dictionary dictionary, int variantsLimit) {
         if (variantsLimit < 2) throw new IllegalArgumentException("Variants limit is less than 2!");
         this.wrongVariants = dictionary.getWrongVariants();
         this.buffer = new LinkedList<>();
@@ -53,7 +53,7 @@ public class CommonQuestionnaire implements Questionnaire {
         this.questions = list;
     }
 
-    private void restoreQuestions(Memento memento, Dictionary dictionary, int variantsLimit) {
+    private void restoreQuestions(Memento memento, ru.glebsa.learn.questionarie.dictionary.Dictionary dictionary, int variantsLimit) {
         if (variantsLimit < 2) throw new IllegalArgumentException("Variants limit is less than 2!");
         this.wrongVariants = dictionary != null ? dictionary.getWrongVariants() : memento.getWrongVariants();
         this.rightAnswers = memento.getRightAnswers();

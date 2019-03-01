@@ -1,4 +1,4 @@
-package learneng.questionarie;
+package ru.glebsa.learn.questionarie;
 
 public interface Answer {
 

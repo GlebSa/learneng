@@ -1,7 +1,7 @@
-package learneng.ui;
+package ru.glebsa.learn.ui;
 
-import learneng.questionarie.Question;
-import learneng.questionarie.Questionnaire;
+import ru.glebsa.learn.questionarie.Question;
+import ru.glebsa.learn.questionarie.Questionnaire;
 
 import java.util.List;
 import java.util.Scanner;

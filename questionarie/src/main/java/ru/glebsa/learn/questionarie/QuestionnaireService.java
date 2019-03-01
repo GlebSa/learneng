@@ -1,11 +1,11 @@
-package learneng.questionarie;
+package ru.glebsa.learn.questionarie;
 
-import learneng.persistence.JacksonSerializer;
-import learneng.persistence.Serializer;
-import learneng.questionarie.dictionary.Dictionary;
-import learneng.questionarie.dictionary.TextFileDictionarySource;
+import ru.glebsa.learn.persistence.JacksonSerializer;
+import ru.glebsa.learn.persistence.Serializer;
+import ru.glebsa.learn.questionarie.dictionary.Dictionary;
+import ru.glebsa.learn.questionarie.dictionary.TextFileDictionarySource;
 
-import static learneng.questionarie.CommonQuestionnaire.*;
+import static ru.glebsa.learn.questionarie.CommonQuestionnaire.*;
 
 public class QuestionnaireService {
 

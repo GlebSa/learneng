@@ -1,4 +1,4 @@
-package learneng.persistence;
+package ru.glebsa.learn.persistence;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

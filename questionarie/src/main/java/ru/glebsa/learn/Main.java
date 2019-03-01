@@ -1,8 +1,8 @@
-package learneng;
+package ru.glebsa.learn;
 
-import learneng.questionarie.Questionnaire;
-import learneng.questionarie.QuestionnaireService;
-import learneng.ui.Console;
+import ru.glebsa.learn.questionarie.Questionnaire;
+import ru.glebsa.learn.questionarie.QuestionnaireService;
+import ru.glebsa.learn.ui.Console;
 
 public class Main {
 

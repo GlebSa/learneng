@@ -1,4 +1,4 @@
-package learneng.questionarie;
+package ru.glebsa.learn.questionarie;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
