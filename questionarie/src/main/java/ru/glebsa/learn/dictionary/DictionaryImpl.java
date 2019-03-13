@@ -1,4 +1,4 @@
-package ru.glebsa.learn.questionarie.dictionary;
+package ru.glebsa.learn.dictionary;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

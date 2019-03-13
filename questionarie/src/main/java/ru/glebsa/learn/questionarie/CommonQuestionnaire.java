@@ -1,8 +1,12 @@
 package ru.glebsa.learn.questionarie;
 
-import ru.glebsa.learn.questionarie.dictionary.Dictionary;
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+import ru.glebsa.learn.dictionary.Dictionary;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import ru.glebsa.learn.dictionary.DictionarySource;
+import ru.glebsa.learn.persistence.Serializer;
 
 import java.io.Serializable;
 import java.util.*;
@@ -17,28 +21,32 @@ public class CommonQuestionnaire implements Questionnaire {
     private List<DefaultAnswer> wrongAnswers;
     private List<String> wrongVariants;
 
-    /**
-     * @param dictionary    {@link ru.glebsa.learn.questionarie.dictionary.Dictionary}
-     * @param variantsLimit limit of variants for a question
-     */
-    public CommonQuestionnaire(ru.glebsa.learn.questionarie.dictionary.Dictionary dictionary, int variantsLimit) {
-        setQuestions(dictionary, variantsLimit);
+    @Inject
+    private DictionarySource dictionarySource;
+
+    @Inject
+    private Serializer serializer;
+
+    @Inject
+    @Named("variantsLimit")
+    private int variantsLimit;
+
+    public CommonQuestionnaire() {
     }
 
-    /**
-     * @param dictionary    {@link ru.glebsa.learn.questionarie.dictionary.Dictionary}
-     * @param memento       {@link Memento}
-     * @param variantsLimit limit of variants for a question
-     */
-    public CommonQuestionnaire(ru.glebsa.learn.questionarie.dictionary.Dictionary dictionary, Memento memento, int variantsLimit) {
+    @Inject
+    public void init() {
+        Dictionary dictionary = dictionarySource.getDictionary();
+        Memento memento = serializer.deserialize(Memento.class);
+
         if (memento != null) {
-            restoreQuestions(memento, dictionary, variantsLimit);
+            restoreQuestions(memento, dictionary);
         } else {
-            setQuestions(dictionary, variantsLimit);
+            setQuestions(dictionary);
         }
     }
 
-    private void setQuestions(ru.glebsa.learn.questionarie.dictionary.Dictionary dictionary, int variantsLimit) {
+    private void setQuestions(Dictionary dictionary) {
         if (variantsLimit < 2) throw new IllegalArgumentException("Variants limit is less than 2!");
         this.wrongVariants = dictionary.getWrongVariants();
         this.buffer = new LinkedList<>();
@@ -47,13 +55,13 @@ public class CommonQuestionnaire implements Questionnaire {
 
         Random random = new Random(47);
         LinkedList<DefaultQuestion> list = dictionary.getValues().entrySet().stream()
-                .map(entry -> createQuestion(entry.getKey(), entry.getValue(), dictionary.getWrongVariants(), random, variantsLimit))
+                .map(entry -> createQuestion(entry.getKey(), entry.getValue(), dictionary.getWrongVariants(), random))
                 .collect(Collectors.toCollection(LinkedList::new));
         Collections.shuffle(list);
         this.questions = list;
     }
 
-    private void restoreQuestions(Memento memento, ru.glebsa.learn.questionarie.dictionary.Dictionary dictionary, int variantsLimit) {
+    private void restoreQuestions(Memento memento, Dictionary dictionary) {
         if (variantsLimit < 2) throw new IllegalArgumentException("Variants limit is less than 2!");
         this.wrongVariants = dictionary != null ? dictionary.getWrongVariants() : memento.getWrongVariants();
         this.rightAnswers = memento.getRightAnswers();
@@ -62,19 +70,19 @@ public class CommonQuestionnaire implements Questionnaire {
 
         Random random = new Random(47);
         Stream<DefaultQuestion> questionStream = memento.getQuestions().stream()
-                .map(question -> createQuestion(question.getValue(), question.getRightVariants(), wrongVariants, random, variantsLimit));
+                .map(question -> createQuestion(question.getValue(), question.getRightVariants(), wrongVariants, random));
         Stream<DefaultQuestion> skippedStream = memento.getSkipped().stream()
-                .map(question -> createQuestion(question.getValue(), question.getRightVariants(), wrongVariants, random, variantsLimit));
+                .map(question -> createQuestion(question.getValue(), question.getRightVariants(), wrongVariants, random));
         Stream<DefaultQuestion> wrongAnswersStream = memento.getWrongAnswers().stream()
-                .map(answer -> createQuestion(answer.getQuestion().getValue(), answer.getQuestion().getRightVariants(), wrongVariants, random, variantsLimit));
-        Stream<DefaultQuestion> newQuestions = getNewQuestions(memento, dictionary, random, variantsLimit);
+                .map(answer -> createQuestion(answer.getQuestion().getValue(), answer.getQuestion().getRightVariants(), wrongVariants, random));
+        Stream<DefaultQuestion> newQuestions = getNewQuestions(memento, dictionary, random);
 
         this.questions = Stream.of(newQuestions, wrongAnswersStream, skippedStream, questionStream)
                 .flatMap(s -> s)
                 .collect(Collectors.toCollection(LinkedList::new));
     }
 
-    private Stream<DefaultQuestion> getNewQuestions(Memento memento, Dictionary dictionary, Random random, int variantsLimit) {
+    private Stream<DefaultQuestion> getNewQuestions(Memento memento, Dictionary dictionary, Random random) {
         if (dictionary == null) return Stream.empty();
 
         Stream<String> questionStream = memento.getQuestions().stream()
@@ -92,10 +100,10 @@ public class CommonQuestionnaire implements Questionnaire {
 
         return dictionary.getValues().entrySet().stream()
                 .filter(entry -> !values.contains(entry.getKey()))
-                .map(entry -> createQuestion(entry.getKey(), entry.getValue(), wrongVariants, random, variantsLimit));
+                .map(entry -> createQuestion(entry.getKey(), entry.getValue(), wrongVariants, random));
     }
 
-    private DefaultQuestion createQuestion(String questionValue, List<String> rightVariants, List<String> wrongVariants, Random random, int variantsLimit) {
+    private DefaultQuestion createQuestion(String questionValue, List<String> rightVariants, List<String> wrongVariants, Random random) {
         List<String> variants = new ArrayList<>();
         variants.add(rightVariants.get(random.nextInt(rightVariants.size())));
 
@@ -145,13 +153,14 @@ public class CommonQuestionnaire implements Questionnaire {
     }
 
     @Override
-    public Memento save() {
-        return new Memento()
+    public void save() {
+        Memento memento = new Memento()
                 .setQuestions(new ArrayList<>(this.questions))
                 .setSkipped(new ArrayList<>(this.buffer))
                 .setRightAnswers(new ArrayList<>(this.rightAnswers))
                 .setWrongAnswers(new ArrayList<>(this.wrongAnswers))
                 .setWrongVariants(new ArrayList<>(this.wrongVariants));
+        serializer.serialize(memento);
     }
 
     @Override
@@ -176,7 +185,7 @@ public class CommonQuestionnaire implements Questionnaire {
 
     @Data
     @Accessors(chain = true)
-    public static final class Memento implements Serializable {
+    private static final class Memento implements Serializable {
         private List<DefaultQuestion> questions;
         private List<DefaultQuestion> skipped;
         private List<DefaultAnswer> rightAnswers;

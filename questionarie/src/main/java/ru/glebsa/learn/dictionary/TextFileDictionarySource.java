@@ -1,4 +1,7 @@
-package ru.glebsa.learn.questionarie.dictionary;
+package ru.glebsa.learn.dictionary;
+
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,10 +15,11 @@ import java.util.stream.Collectors;
 
 public class TextFileDictionarySource implements DictionarySource {
 
+    @Inject
+    @Named("dictionaryFilePath")
     private String dictionaryFilePath;
 
-    public TextFileDictionarySource(String dictionaryFilePath) {
-        this.dictionaryFilePath = Objects.requireNonNull(dictionaryFilePath);
+    public TextFileDictionarySource() {
     }
 
     @Override

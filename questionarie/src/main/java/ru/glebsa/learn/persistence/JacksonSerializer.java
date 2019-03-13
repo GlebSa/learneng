@@ -1,20 +1,26 @@
 package ru.glebsa.learn.persistence;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
 public class JacksonSerializer implements Serializer {
-    private ObjectMapper mapper;
-    private String saveDirectory;
+    private final ObjectMapper mapper;
+
+    @Inject
+    @Named("savePath")
+    private String savePath;
+
+    @Inject
+    @Named("saveFilename")
     private String filename;
 
-    public JacksonSerializer(String saveDirectory, String filename) {
+    public JacksonSerializer() {
         this.mapper = new ObjectMapper();
-        this.saveDirectory = saveDirectory;
-        this.filename = filename;
     }
 
     @Override
@@ -30,12 +36,12 @@ public class JacksonSerializer implements Serializer {
         return new BufferedWriter(
                 new OutputStreamWriter(
                         Files.newOutputStream(
-                                new File(saveDirectory + filename + ".json").toPath())));
+                                new File(savePath + filename + ".json").toPath())));
     }
 
     @Override
     public <T> T deserialize(Class<T> clazz) {
-        File file = new File(saveDirectory + filename + ".json");
+        File file = new File(savePath + filename + ".json");
         if (!file.exists()) return null;
 
         try (BufferedReader r = getReader(file)) {

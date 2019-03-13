@@ -1,4 +1,4 @@
-package ru.glebsa.learn.questionarie.dictionary;
+package ru.glebsa.learn.dictionary;
 
 import java.util.List;
 import java.util.Map;

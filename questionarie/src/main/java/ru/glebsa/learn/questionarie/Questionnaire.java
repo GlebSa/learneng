@@ -8,7 +8,7 @@ public interface Questionnaire {
 
     boolean answer(String userAnswer);
 
-    Object save();
+    void save();
 
     int rightAnswered();
 

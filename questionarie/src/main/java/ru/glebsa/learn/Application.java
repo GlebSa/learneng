@@ -1,10 +1,12 @@
 package ru.glebsa.learn;
 
-import ru.glebsa.learn.questionarie.Questionnaire;
-import ru.glebsa.learn.questionarie.QuestionnaireService;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import ru.glebsa.learn.config.QuestionnaireModule;
+import ru.glebsa.learn.config.QuestionnaireParameters;
 import ru.glebsa.learn.ui.Console;
 
-public class Main {
+public class Application {
 
     public static void main(String[] args) {
         String path = null;
@@ -32,9 +34,16 @@ public class Main {
             return;
         }
 
-        Questionnaire questionnaire = QuestionnaireService.createCommon(path, savePath, variants);
-        new Console().start(questionnaire);
-        QuestionnaireService.save(questionnaire, savePath);
+        QuestionnaireParameters parameters = QuestionnaireParameters.builder()
+                .dictionaryFilePath(path)
+                .savePath(savePath)
+                .variantsLimit(variants)
+                .build();
+
+        Injector injector = Guice.createInjector(new QuestionnaireModule(parameters));
+
+        Console console = injector.getInstance(Console.class);
+        console.start();
     }
 
 

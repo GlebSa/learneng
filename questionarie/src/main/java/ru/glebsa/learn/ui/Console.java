@@ -1,5 +1,6 @@
 package ru.glebsa.learn.ui;
 
+import com.google.inject.Inject;
 import ru.glebsa.learn.questionarie.Question;
 import ru.glebsa.learn.questionarie.Questionnaire;
 
@@ -21,7 +22,10 @@ public class Console {
     private static final String ANSI_LIGHT = "\u001B[1m";
     private static final String ANSI_DARK = "\u001B[2m";
 
-    public void start(Questionnaire questionnaire) {
+    @Inject
+    private Questionnaire questionnaire;
+
+    public void start() {
         System.out.println("For exit, please enter \'q\'.");
         System.out.println("For skip question, please enter \'s\'.");
         mainLoop:
@@ -71,6 +75,8 @@ public class Console {
                 + "; Skipped: " + questionnaire.notAnswered()
                 + "; Left to answer: " + questionnaire.leftToAnswer()
                 + ANSI_RESET);
+
+        questionnaire.save();
     }
 
     private void printAnswerVariants(List<String> variants) {
