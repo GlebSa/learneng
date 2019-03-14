@@ -7,6 +7,7 @@ import ru.glebsa.tts.player.Player;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.LogManager;
 
 public class Console {
     private static final String ANSI_RESET = "\u001B[0m";
@@ -30,6 +31,8 @@ public class Console {
     private Player player;
 
     public void start() {
+        LogManager.getLogManager().reset(); //suppress Watson logger
+
         System.out.println("For exit, please enter \'q\'.");
         System.out.println("For skip question, please enter \'s\'.");
         mainLoop:
