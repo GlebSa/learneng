@@ -1,4 +1,4 @@
-package ru.glebsa.tts;
+package ru.glebsa.tts.synthesizer;
 
 public interface Synthesizer {
 

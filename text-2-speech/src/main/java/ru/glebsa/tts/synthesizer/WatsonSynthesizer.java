@@ -1,11 +1,11 @@
-package ru.glebsa.tts;
+package ru.glebsa.tts.synthesizer;
 
 import com.ibm.watson.developer_cloud.http.ServiceCall;
 import com.ibm.watson.developer_cloud.service.security.IamOptions;
 import com.ibm.watson.developer_cloud.text_to_speech.v1.TextToSpeech;
 import com.ibm.watson.developer_cloud.text_to_speech.v1.model.SynthesizeOptions;
 import org.apache.commons.io.IOUtils;
-import ru.glebsa.tts.dto.WatsonProperties;
+import ru.glebsa.tts.synthesizer.dto.WatsonProperties;
 
 import java.io.IOException;
 import java.io.InputStream;

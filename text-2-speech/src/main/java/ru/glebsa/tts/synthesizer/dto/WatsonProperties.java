@@ -1,4 +1,4 @@
-package ru.glebsa.tts.dto;
+package ru.glebsa.tts.synthesizer.dto;
 
 import lombok.Data;
 

@@ -9,6 +9,8 @@ import ru.glebsa.learn.persistence.Serializer;
 import ru.glebsa.learn.questionarie.CommonQuestionnaire;
 import ru.glebsa.learn.questionarie.Questionnaire;
 import ru.glebsa.learn.ui.Console;
+import ru.glebsa.tts.config.TtsModule;
+import ru.glebsa.tts.config.TtsParameters;
 
 import java.util.Objects;
 
@@ -32,6 +34,11 @@ public class QuestionnaireModule extends AbstractModule {
         bind(String.class).annotatedWith(Names.named("savePath")).toInstance(parameters.getSavePath());
         bind(String.class).annotatedWith(Names.named("saveFilename")).toInstance(getSaveFilename(questionnaire.getClass()));
         bind(String.class).annotatedWith(Names.named("dictionaryFilePath")).toInstance(parameters.getDictionaryFilePath());
+
+        TtsParameters ttsParameters = TtsParameters.builder()
+                .saveSoundPath("sounds/" + parameters.getSavePath())
+                .build();
+        install(new TtsModule(ttsParameters));
     }
 
     private String getSaveFilename(Class clazz) {

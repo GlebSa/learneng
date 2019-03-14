@@ -3,6 +3,7 @@ package ru.glebsa.learn.ui;
 import com.google.inject.Inject;
 import ru.glebsa.learn.questionarie.Question;
 import ru.glebsa.learn.questionarie.Questionnaire;
+import ru.glebsa.tts.player.Player;
 
 import java.util.List;
 import java.util.Scanner;
@@ -25,6 +26,9 @@ public class Console {
     @Inject
     private Questionnaire questionnaire;
 
+    @Inject
+    private Player player;
+
     public void start() {
         System.out.println("For exit, please enter \'q\'.");
         System.out.println("For skip question, please enter \'s\'.");
@@ -36,6 +40,8 @@ public class Console {
             printSeparateLine();
             printQuestionPhrase(question);
             printAnswerVariants(variants);
+
+            player.play(question.getValue());
 
             //input
             while (true) {
