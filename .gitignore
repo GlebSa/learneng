@@ -109,3 +109,5 @@ local.properties
 logs/
 build/
 apikey
+commonquestionnaire-save.json
+*.mp3
