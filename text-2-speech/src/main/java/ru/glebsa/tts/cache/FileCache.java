@@ -20,7 +20,14 @@ public class FileCache implements Cache {
     public void store(byte[] bytes, String filename) {
         ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
         try {
-            Files.copy(bis, new File(savePath + filename + FORMAT).toPath());
+
+            File file = new File(savePath + filename + FORMAT);
+
+            if (file.getParentFile() != null && !file.getParentFile().exists()) {
+                Files.createDirectories(file.getParentFile().toPath());
+            }
+
+            Files.copy(bis, file.toPath());
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }

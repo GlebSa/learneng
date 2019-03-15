@@ -25,18 +25,24 @@ public class JacksonSerializer implements Serializer {
 
     @Override
     public void serialize(Object object) {
-        try (BufferedWriter w = getWriter()) {
+        File file = new File(savePath + filename + ".json");
+
+        try (BufferedWriter w = getWriter(file)) {
+            if (file.getParentFile() != null && !file.getParentFile().exists()) {
+                Files.createDirectories(file.getParentFile().toPath());
+            }
+
             this.mapper.writeValue(w, object);
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
     }
 
-    private BufferedWriter getWriter() throws IOException {
+    private BufferedWriter getWriter(File file) throws IOException {
         return new BufferedWriter(
                 new OutputStreamWriter(
                         Files.newOutputStream(
-                                new File(savePath + filename + ".json").toPath())));
+                                file.toPath())));
     }
 
     @Override

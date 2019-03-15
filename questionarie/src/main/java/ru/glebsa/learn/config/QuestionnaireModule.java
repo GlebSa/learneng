@@ -36,7 +36,7 @@ public class QuestionnaireModule extends AbstractModule {
         bind(String.class).annotatedWith(Names.named("dictionaryFilePath")).toInstance(parameters.getDictionaryFilePath());
 
         TtsParameters ttsParameters = TtsParameters.builder()
-                .saveSoundPath("sounds/" + parameters.getSavePath())
+                .saveSoundPath(parameters.getSavePath() + "sounds/")
                 .build();
         install(new TtsModule(ttsParameters));
     }
