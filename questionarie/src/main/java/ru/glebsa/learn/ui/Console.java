@@ -35,6 +35,7 @@ public class Console {
 
         System.out.println("For exit, please enter \'q\'.");
         System.out.println("For skip question, please enter \'s\'.");
+        System.out.println("For repeat sound, please enter \'r\'.");
         mainLoop:
         while (questionnaire.hasQuestions()) {
             Question question = questionnaire.getQuestion();
@@ -60,6 +61,10 @@ public class Console {
                 if (ans.startsWith("s") || ans.startsWith("S")) {
                     printRightVariants(question);
                     continue mainLoop;
+                }
+                if (ans.startsWith("r") || ans.startsWith("R")) {
+                    player.play(question.getValue());
+                    continue;
                 }
 
                 try {
